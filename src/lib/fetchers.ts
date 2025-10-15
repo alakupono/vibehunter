@@ -2,6 +2,7 @@ import Parser from 'rss-parser'
 import { prisma } from './db'
 import { SOURCES, type Source } from './sources'
 import slugify from 'slugify'
+import { summarizeArticle } from './llm'
 
 type ParsedItem = { title: string; link: string; isoDate?: string; contentSnippet?: string }
 
@@ -28,8 +29,18 @@ export async function fetchSource(source: Source) {
         create: { name: source.name, url: source.url, type: source.type },
         update: {},
       })
+      // Summarize via LLM
+      let finalTitle = it.title
+      let finalDek = dek
+      let finalBody = body
+      try {
+        const s = await summarizeArticle({ sourceName: source.name, url, title: it.title, summary: it.contentSnippet, date: it.isoDate ?? undefined, tagGuess: source.tag })
+        finalTitle = s.title
+        finalDek = s.dek
+        finalBody = s.body
+      } catch {}
       await prisma.article.create({ data: {
-        slug, title: it.title, dek, body, tag: source.tag, url, sourceId: src.id, publishedAt,
+        slug, title: finalTitle, dek: finalDek, body: finalBody, tag: source.tag, url, sourceId: src.id, publishedAt,
       } })
       created++
     }
