@@ -7,6 +7,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Source {
@@ -32,6 +33,8 @@ model Article {
   publishedAt  DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  @@index([publishedAt, id], map: "idx_article_published")
+  @@index([tag, publishedAt], map: "idx_article_tag_published")
 }
 
 model Digest {
@@ -89,6 +92,20 @@ model PromptExample {
   stack           String
   tags            String[]
   createdAt       DateTime @default(now())
+}
+
+model CandidateSource {
+  id            String    @id @default(cuid())
+  name          String
+  url           String    @unique
+  tag           String
+  type          String    // rss | atom | github-releases | sitemap
+  evidence      String?
+  score         Float     @default(0)
+  status        String    @default("pending") // pending|approved|rejected|dead
+  lastCheckedAt DateTime?
+  createdAt     DateTime  @default(now())
+  @@index([status, score], map: "idx_candidate_status_score")
 }
 
 
