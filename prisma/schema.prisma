@@ -28,6 +28,7 @@ model Article {
   body         String
   tag          String
   url          String
+  imageUrl     String?
   sourceId     String
   source       Source   @relation(fields: [sourceId], references: [id])
   publishedAt  DateTime

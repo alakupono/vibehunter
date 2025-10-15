@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { ingestAllSources } from '@/lib/fetchers'
 
-export const runtime = 'node'
+export const runtime = 'nodejs'
 
 export async function POST() {
   const result = await ingestAllSources()

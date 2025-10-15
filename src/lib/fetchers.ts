@@ -4,13 +4,18 @@ import { SOURCES, type Source } from './sources'
 import slugify from 'slugify'
 import { summarizeArticle } from './llm'
 
-type ParsedItem = { title: string; link: string; isoDate?: string; contentSnippet?: string }
+type ParsedItem = { title: string; link: string; isoDate?: string; contentSnippet?: string; enclosure?: { url?: string }; content?: string }
 
 const parser = new Parser()
 
 export async function fetchSource(source: Source) {
-  const feed = await parser.parseURL(source.url)
-  const items = (feed.items || []) as ParsedItem[]
+  let items: ParsedItem[] = []
+  try {
+    const feed = await parser.parseURL(source.url)
+    items = (feed.items || []) as ParsedItem[]
+  } catch (e) {
+    return { created: 0, updated: 0 }
+  }
   let created = 0, updated = 0
   for (const it of items.slice(0, 20)) {
     if (!it.link || !it.title) continue
@@ -18,7 +23,8 @@ export async function fetchSource(source: Source) {
     const publishedAt = it.isoDate ? new Date(it.isoDate) : new Date()
     const slug = slugify(`${source.tag}-${it.title}`.slice(0, 80), { lower: true, strict: true })
     const dek = it.contentSnippet?.slice(0, 200) || ''
-    const body = it.contentSnippet || it.title
+    const body = it.contentSnippet || it.content || it.title
+    const imageUrl = it.enclosure?.url
     const existing = await prisma.article.findUnique({ where: { slug } })
     if (existing) {
       await prisma.article.update({ where: { slug }, data: { dek, body, updatedAt: new Date() } })
@@ -40,7 +46,7 @@ export async function fetchSource(source: Source) {
         finalBody = s.body
       } catch {}
       await prisma.article.create({ data: {
-        slug, title: finalTitle, dek: finalDek, body: finalBody, tag: source.tag, url, sourceId: src.id, publishedAt,
+        slug, title: finalTitle, dek: finalDek, body: finalBody, tag: source.tag, url, imageUrl, sourceId: src.id, publishedAt,
       } })
       created++
     }

@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { FetchNow } from '@/ui/FetchNow'
+import { Card } from '@/ui/Card'
 
 export default async function Home() {
   const articles = await prisma.article.findMany({
@@ -15,13 +16,9 @@ export default async function Home() {
         </div>
         <FetchNow />
       </section>
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16, padding: '0 24px 48px' }}>
+      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16, padding: '0 24px 48px' }}>
         {articles.map(a => (
-          <a key={a.id} href={`/${a.slug}`} style={{ background: '#111827', padding: 16, borderRadius: 12, textDecoration: 'none', color: '#E5E7EB', boxShadow: '0 0 0 1px rgba(255,255,255,0.02)' }}>
-            <div style={{ fontSize: 12, color: '#A78BFA', marginBottom: 6 }}>{a.tag.toUpperCase()}</div>
-            <div style={{ fontWeight: 700, lineHeight: 1.3 }}>{a.title}</div>
-            <div style={{ color: '#9CA3AF', marginTop: 8, fontSize: 14 }}>{a.dek}</div>
-          </a>
+          <Card key={a.id} title={a.title} dek={a.dek} tag={a.tag} imageUrl={a.imageUrl ?? undefined} href={`/${a.slug}`} />
         ))}
       </section>
     </main>
