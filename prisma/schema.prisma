@@ -1,0 +1,94 @@
+// Prisma schema for Vibe Coding News Hub
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Source {
+  id        String    @id @default(cuid())
+  name      String
+  url       String    @unique
+  type      String    // rss | changelog | blog | twitter
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  articles  Article[]
+}
+
+model Article {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  dek          String
+  body         String
+  tag          String
+  url          String
+  sourceId     String
+  source       Source   @relation(fields: [sourceId], references: [id])
+  publishedAt  DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Digest {
+  id          String    @id @default(cuid())
+  date        DateTime  @unique
+  title       String
+  summary     String
+  articleIds  String[]
+  createdAt   DateTime  @default(now())
+}
+
+model Tutorial {
+  id               String       @id @default(cuid())
+  slug             String       @unique
+  title            String
+  dek              String
+  difficulty       String
+  estimatedMinutes Int
+  tags             String[]
+  takeaways        String[]
+  sourceUrls       String[]
+  publishedAt      DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  steps            TutorialStep[]
+  codeBlocks       CodeBlock[]
+}
+
+model TutorialStep {
+  id          String   @id @default(cuid())
+  order       Int
+  title       String
+  content     String
+  tutorialId  String
+  tutorial    Tutorial @relation(fields: [tutorialId], references: [id])
+}
+
+model CodeBlock {
+  id          String   @id @default(cuid())
+  order       Int
+  language    String
+  filename    String?
+  content     String
+  explanation String?
+  tutorialId  String
+  tutorial    Tutorial @relation(fields: [tutorialId], references: [id])
+}
+
+model PromptExample {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  prompt          String
+  context         String?
+  expectedOutcome String
+  stack           String
+  tags            String[]
+  createdAt       DateTime @default(now())
+}
+
+
