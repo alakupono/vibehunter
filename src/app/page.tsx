@@ -1,5 +1,5 @@
-import { prisma } from '@/src/lib/db'
-import { FetchNow } from '@/src/ui/FetchNow'
+import { prisma } from '@/lib/db'
+import { FetchNow } from '@/ui/FetchNow'
 
 export default async function Home() {
   const articles = await prisma.article.findMany({

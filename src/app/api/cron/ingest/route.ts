@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { ingestAllSources } from '@/src/lib/fetchers'
+import { ingestAllSources } from '@/lib/fetchers'
 
 export const runtime = 'node'
 
