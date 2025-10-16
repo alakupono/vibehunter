@@ -2,6 +2,7 @@ import { prisma } from '@/lib/db'
 import { FetchNow } from '@/ui/FetchNow'
 import { Card } from '@/ui/Card'
 import styles from './home.module.css'
+import { app } from '@/../config/app'
 
 export default async function Home() {
   const articles = await prisma.article.findMany({
@@ -28,7 +29,7 @@ export default async function Home() {
               <a href={`/${lead.slug}`} className={styles.hero}>
               {/* Use fallback when no image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" src={lead.imageUrl ?? '/fallback.png'} className={styles.heroImage} />
+              <img alt="" src={lead.imageUrl ?? app.assets.heroFallback} className={styles.heroImage} />
               <div className={styles.heroOverlay} />
               <div className={styles.heroContent}>
                 <div className={styles.eyebrow}>{lead.tag.toUpperCase()}</div>
@@ -38,7 +39,7 @@ export default async function Home() {
               </a>
               {/* two-up lives under hero in same left column */}
               <div>
-                <div className={styles.sectionTitle}>Starter Guides for Vibe Coders</div>
+                <div className={styles.sectionTitle}>{app.sections.beginnerTitle}</div>
                 <div className={styles.twoUpGrid}>
                   <a href="#" className={styles.twoUpCard}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -64,39 +65,21 @@ export default async function Home() {
             <div style={{ display: 'grid', gap: 16 }}>
               {/* Sponsor placeholder above Radar */}
               <div className={styles.sponsorCard}>
-                <div className={styles.sponsorTitle}>Sponsored Ad</div>
+                <div className={styles.sponsorTitle}>{app.assets.sponsorLabel}</div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/sponsor1.png" alt="Sponsored Ad" className={styles.sponsorImg} />
+                <a href={app.assets.sponsorHref} target="_blank" rel="noopener noreferrer">
+                  <img src={app.assets.sponsorImage} alt={app.assets.sponsorLabel} className={styles.sponsorImg} />
+                </a>
               </div>
               {/* Vibe Hunter Radar - mock ticker */}
               <div className={styles.tickerPanel}>
-                <div className={styles.tickerTitle}>Vibe Hunter Radar</div>
+                <div className={styles.tickerTitle}>{app.sections.radarTitle}</div>
                 <div className={styles.tickerViewport}>
                   <ul className={`${styles.tickerList} ${styles.tickerAuto}`}>
-                    {[
-                      ['Domain: vibeapps.io', '$4.2k'],
-                      ['Newsletter: Cursor Weekly (3.4k subs)', '$7.8k'],
-                      ['SaaS: AI Prompt Cards', '$12k'],
-                      ['Community: Builders in v0 (Discord)', '$2.1k'],
-                      ['App: Prompt Graph', '$8.4k'],
-                      ['Blog: AI Daily (11k uniques/mo)', '$6.2k'],
-                      ['Tool: Repo Summarizer', '$3.3k'],
-                      ['Domain: vibeengine.dev', '$2.4k'],
-                      ['Newsletter: LLM Hacks (9.1k)', '$6.9k'],
-                      ['Course IP: Next.js AI Starter', '$5.0k'],
-                      ['Community: Indie AI (Slack)', '$1.9k'],
-                      ['SaaS: Ghost CMS Theme', '$2.5k'],
-                      ['Template: Dev Agency Kit', '$1.1k'],
-                      ['Chrome Ext: Tab Annotator', '$0.9k'],
-                      ['App: Clip2Docs', '$1.7k'],
-                      // duplicate a few to create seamless scroll illusion
-                      ['Domain: vibeapps.io', '$4.2k'],
-                      ['Newsletter: Cursor Weekly (3.4k subs)', '$7.8k'],
-                      ['SaaS: AI Prompt Cards', '$12k'],
-                    ].map(([label, price], i) => (
+                    {app.radarItems.map((item, i) => (
                       <li key={i} className={styles.tickerItem}>
-                        <a href="#">{label}</a>
-                        <span className={styles.tickerPrice}>{price}</span>
+                        <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                        {item.price ? <span className={styles.tickerPrice}>{item.price}</span> : null}
                       </li>
                     ))}
                   </ul>

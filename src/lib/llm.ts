@@ -1,5 +1,6 @@
 import OpenAI from 'openai'
 import { ArticleLLMSchema, type ArticleLLMOutput, AnalysisSchema, type AnalysisOutput } from './schemas'
+import { app } from '../../config/app'
 
 const provider = (process.env.LLM_PROVIDER || 'openai').toLowerCase()
 
@@ -9,14 +10,14 @@ function getClient() {
   return new OpenAI({ apiKey })
 }
 
-const SYSTEM_PROMPT = `You are a concise tech editor for a site called Vibe Coding News. Write accurate, neutral explainers around 500 words (aim 450–550), with 2–5 concrete takeaways. Never fabricate or overhype. Respond with JSON only (valid json object) that matches the required schema.`
+const SYSTEM_PROMPT = app.llm.summarizerPrompt
 
 export async function summarizeArticle(input: { sourceName: string; url: string; title: string; summary?: string; date?: string; tagGuess?: string }): Promise<ArticleLLMOutput> {
   if (provider !== 'openai') throw new Error('Only openai supported for now')
   const client = getClient()
   const user = `SOURCE: ${input.sourceName}\nURL: ${input.url}\nTITLE: ${input.title}\nSUMMARY: ${input.summary ?? ''}\nPUBLISHED: ${input.date ?? ''}`
   const res = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: app.llm.model,
     temperature: 0.4,
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
@@ -35,7 +36,7 @@ export async function summarizeArticle(input: { sourceName: string; url: string;
   const wordCount = data.body.trim().split(/\s+/).length
   if (wordCount < 420) {
     const expand = await client.chat.completions.create({
-      model: 'gpt-4o-mini', temperature: 0.4,
+      model: app.llm.model, temperature: 0.4,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: `${user}\nYour last answer was ${wordCount} words. Expand to 450–550 words with concrete details, context, and caveats. Output JSON only.` },
@@ -49,16 +50,7 @@ export async function summarizeArticle(input: { sourceName: string; url: string;
   return data
 }
 
-const ANALYSIS_SYSTEM = `You are a neutral, pragmatic staff engineer. Provide:
-
-- A non-biased, defensible analysis that surfaces trade-offs, risks, and limits. No promotion, no speculation.
-- 2–4 concrete mini-exercises readers can actually do in 15–30 minutes, tied to the article's technology/tag (e.g., Cursor, Copilot, Replit, v0, Next.js, Xcode).
-- Use specific commands, files, or API calls when relevant. Keep steps minimal and outcome-focused.
-
-Style constraints:
-- Do not use templated phrases or boilerplate (avoid: "In this article", "Overall", "In conclusion", "As an AI").
-- Plain, direct language. No marketing or exclamation marks. No long preambles.
-- Output JSON only (valid object) matching the required schema.`
+const ANALYSIS_SYSTEM = app.llm.analyzerPrompt
 
 export async function analyzeArticle(input: { title: string; dek: string; body: string; tag: string }): Promise<AnalysisOutput> {
   const client = getClient()
@@ -79,7 +71,7 @@ export async function analyzeArticle(input: { title: string; dek: string; body: 
 
   // First attempt: JSON schema guided
   const res = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: app.llm.model,
     temperature: 0.3,
     messages: [
       { role: 'system', content: ANALYSIS_SYSTEM },
@@ -93,7 +85,7 @@ export async function analyzeArticle(input: { title: string; dek: string; body: 
 
   // Fallback: no schema, ask for pure JSON explicitly
   const res2 = await client.chat.completions.create({
-    model: 'gpt-4o-mini', temperature: 0.2,
+    model: app.llm.model, temperature: 0.2,
     messages: [
       { role: 'system', content: ANALYSIS_SYSTEM },
       { role: 'user', content: `${user}\nRespond with a JSON object EXACTLY matching: {\"opinion\": string, \"implications\":[string]}` },

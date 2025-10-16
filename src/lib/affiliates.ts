@@ -1,4 +1,5 @@
 import { prisma } from './db'
+import { app } from '../../config/app'
 
 export async function resolveAffiliate(url: string): Promise<string | null> {
   try {
@@ -17,10 +18,11 @@ function escapeRegex(s: string): string {
 
 export function decorateAffiliateMentions(
   markdown: string,
-  opts: { keywordVariants: string[]; href: string; maxLinks?: number }
+  opts?: { keywordVariants: string[]; href: string; maxLinks?: number }
 ): string {
-  const { keywordVariants, href } = opts
-  const maxLinks = Math.max(1, opts.maxLinks ?? 5)
+  const keywordVariants = opts?.keywordVariants ?? app.affiliate.keywordVariants
+  const href = opts?.href ?? (app.affiliate.domains[0]?.url || '')
+  const maxLinks = Math.max(1, (opts?.maxLinks ?? app.affiliate.maxLinks) || 5)
 
   // 1) Temporarily replace existing markdown links with placeholders
   const linkRegex = /\[[^\]]+\]\([^\)]+\)/g

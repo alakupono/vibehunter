@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import { decorateAffiliateMentions } from '@/lib/affiliates'
+import { app } from '@/../config/app'
 import styles from './article.module.css'
 import type { Metadata } from 'next'
 
@@ -34,7 +35,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
         <div className={styles.body}>
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize]}>
-            {decorateAffiliateMentions(a.body, { keywordVariants: ['Lovable','lovable','Lovable.dev','lovable.dev'], href: 'https://lovable.dev/?via=vibehunter', maxLinks: 5 })}
+            {decorateAffiliateMentions(a.body)}
           </ReactMarkdown>
         </div>
         <div className={styles.sourceSmall}>Read more at the original source: <a href={a.url} target="_blank" rel="noreferrer">{a.url}</a></div>
@@ -42,7 +43,7 @@ export default async function ArticlePage({ params }: Props) {
 
         {(a as any).opinion && (
           <section style={{ marginTop: 32 }}>
-            <h2 style={{ fontSize: 20, marginBottom: 8 }}>Our Take</h2>
+            <h2 style={{ fontSize: 20, marginBottom: 8 }}>{app.sections.ourTakeTitle}</h2>
             <p style={{ color: '#D1D5DB' }}>{(a as any).opinion}</p>
           </section>
         )}
