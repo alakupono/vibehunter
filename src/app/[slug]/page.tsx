@@ -40,10 +40,10 @@ export default async function ArticlePage({ params }: Props) {
         <div className={styles.sourceSmall}>Read more at the original source: <a href={a.url} target="_blank" rel="noreferrer">{a.url}</a></div>
         <a href={a.url} target="_blank" style={{ display: 'inline-block', marginTop: 24, color: '#22D3EE' }}>Source →</a>
 
-        {a.opinion && (
+        {(a as any).opinion && (
           <section style={{ marginTop: 32 }}>
             <h2 style={{ fontSize: 20, marginBottom: 8 }}>Our Take</h2>
-            <p style={{ color: '#D1D5DB' }}>{a.opinion}</p>
+            <p style={{ color: '#D1D5DB' }}>{(a as any).opinion}</p>
           </section>
         )}
         {Array.isArray(a as any) && (a as any).implications && (a as any).implications.length > 0 && (
