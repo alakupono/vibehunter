@@ -15,7 +15,7 @@ export async function POST() {
     for (const a of recent) {
       try {
         const r = await analyzeArticle({ title: a.title, dek: a.dek, body: a.body, tag: a.tag })
-        await prisma.article.update({ where: { id: a.id }, data: { opinion: r.opinion, exercises: r.exercises as any } })
+        await prisma.article.update({ where: { id: a.id }, data: { opinion: r.opinion } })
         updated++
       } catch (e) {
         console.error('Analyze failed for', a.slug, e)
