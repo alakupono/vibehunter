@@ -2,7 +2,7 @@ import Parser from 'rss-parser'
 import { prisma } from './db'
 import { SOURCES, type Source } from './sources'
 import slugify from 'slugify'
-import { summarizeArticle } from './llm'
+import { summarizeArticle, analyzeArticle } from './llm'
 
 type ParsedItem = { title: string; link: string; isoDate?: string; contentSnippet?: string; enclosure?: { url?: string }; content?: string }
 
@@ -61,8 +61,27 @@ export async function fetchSource(source: Source) {
       (contentEncoded && (contentEncoded.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] as string | undefined))
     )
     const existing = await prisma.article.findUnique({ where: { slug } })
+    // Always summarize to produce an original article
+    let finalTitle = it.title
+    let finalDek = dek
+    let finalBody = body
+    try {
+      const s = await summarizeArticle({ sourceName: source.name, url, title: it.title, summary: it.contentSnippet, date: it.isoDate ?? undefined, tagGuess: source.tag })
+      finalTitle = s.title
+      finalDek = s.dek
+      finalBody = s.body
+    } catch {}
+    if (!imageUrl) {
+      imageUrl = await fetchOgImage(url)
+    }
+    let opinion: string | undefined
+    try {
+      const analysis = await analyzeArticle({ title: finalTitle, dek: finalDek, body: finalBody, tag: source.tag })
+      opinion = analysis.opinion
+    } catch {}
+
     if (existing) {
-      await prisma.article.update({ where: { slug }, data: { dek, body, updatedAt: new Date() } })
+      await prisma.article.update({ where: { slug }, data: { title: finalTitle, dek: finalDek, body: finalBody, imageUrl, opinion, updatedAt: new Date() } })
       updated++
     } else {
       const src = await prisma.source.upsert({
@@ -70,21 +89,8 @@ export async function fetchSource(source: Source) {
         create: { name: source.name, url: source.url, type: source.type },
         update: {},
       })
-      // Summarize via LLM
-      let finalTitle = it.title
-      let finalDek = dek
-      let finalBody = body
-      try {
-        const s = await summarizeArticle({ sourceName: source.name, url, title: it.title, summary: it.contentSnippet, date: it.isoDate ?? undefined, tagGuess: source.tag })
-        finalTitle = s.title
-        finalDek = s.dek
-        finalBody = s.body
-      } catch {}
-      if (!imageUrl) {
-        imageUrl = await fetchOgImage(url)
-      }
       await prisma.article.create({ data: {
-        slug, title: finalTitle, dek: finalDek, body: finalBody, tag: source.tag, url, imageUrl, sourceId: src.id, publishedAt,
+        slug, title: finalTitle, dek: finalDek, body: finalBody, tag: source.tag, url, imageUrl, opinion, sourceId: src.id, publishedAt,
       } })
       created++
     }

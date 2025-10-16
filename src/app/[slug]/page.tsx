@@ -1,4 +1,10 @@
 import { prisma } from '@/lib/db'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
+import { decorateAffiliateMentions } from '@/lib/affiliates'
+import styles from './article.module.css'
 import type { Metadata } from 'next'
 
 type Props = { params: { slug: string } }
@@ -18,13 +24,39 @@ export default async function ArticlePage({ params }: Props) {
   const a = await prisma.article.findUnique({ where: { slug: params.slug } })
   if (!a) return <main style={{ padding: 24, color: '#E5E7EB' }}>Not found</main>
   return (
-    <main style={{ minHeight: '100vh', background: '#0B0F14', color: '#E5E7EB', fontFamily: 'Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji' }}>
-      <article style={{ maxWidth: 800, margin: '0 auto', padding: '48px 24px' }}>
-        <div style={{ color: '#A78BFA', fontSize: 12 }}>{a.tag.toUpperCase()}</div>
-        <h1 style={{ fontSize: 32, margin: '8px 0 12px' }}>{a.title}</h1>
-        <p style={{ color: '#9CA3AF', fontSize: 18, marginBottom: 24 }}>{a.dek}</p>
-        <div style={{ lineHeight: 1.7, fontSize: 16, color: '#D1D5DB', whiteSpace: 'pre-wrap' }}>{a.body}</div>
+    <main className={styles.page}>
+      <article className={styles.article}>
+        <div className={styles.header}>
+          <div className={styles.tag}>{a.tag.toUpperCase()}</div>
+          <h1 className={styles.title}>{a.title}</h1>
+          <p className={styles.dek}>{a.dek}</p>
+          {/* meta row intentionally minimal; source moved to bottom */}
+        </div>
+        <div className={styles.body}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize]}>
+            {decorateAffiliateMentions(a.body, { keywordVariants: ['Lovable','lovable','Lovable.dev','lovable.dev'], href: 'https://lovable.dev/?via=vibehunter', maxLinks: 5 })}
+          </ReactMarkdown>
+        </div>
+        <div className={styles.sourceSmall}>Read more at the original source: <a href={a.url} target="_blank" rel="noreferrer">{a.url}</a></div>
         <a href={a.url} target="_blank" style={{ display: 'inline-block', marginTop: 24, color: '#22D3EE' }}>Source →</a>
+
+        {a.opinion && (
+          <section style={{ marginTop: 32 }}>
+            <h2 style={{ fontSize: 20, marginBottom: 8 }}>Our Take</h2>
+            <p style={{ color: '#D1D5DB' }}>{a.opinion}</p>
+          </section>
+        )}
+        {Array.isArray(a as any) && (a as any).implications && (a as any).implications.length > 0 && (
+          <section style={{ marginTop: 24 }}>
+            <h2 style={{ fontSize: 20, marginBottom: 8 }}>Implications</h2>
+            <ul style={{ marginLeft: 18, color: '#9CA3AF' }}>
+              {((a as any).implications as string[]).map((s, i) => (
+                <li key={i} style={{ marginBottom: 6 }}>{s}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {/* exercises intentionally removed per editorial policy */}
       </article>
     </main>
   )

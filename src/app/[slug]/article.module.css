@@ -1,0 +1,100 @@
+.page {
+  min-height: 100vh;
+  background: #0B0F14;
+  color: #E5E7EB;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
+}
+
+.article {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  color: #A78BFA;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 6px 0 10px;
+  line-height: 1.25;
+}
+
+.dek {
+  color: #c7cdd4;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sourceBtn {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #111827;
+  color: #22D3EE;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.body :global(h2), .body :global(h3) {
+  margin-top: 1.25rem;
+  margin-bottom: .5rem;
+}
+
+.body :global(p) {
+  line-height: 1.75;
+  font-size: 16px;
+  color: #D1D5DB;
+  margin: .75rem 0;
+}
+
+.body :global(a) {
+  color: #22D3EE;
+  text-decoration: underline;
+}
+
+.body :global(ul), .body :global(ol) {
+  padding-left: 1.25rem;
+}
+
+.body :global(blockquote) {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(167,139,250,.6);
+  color: #c7cdd4;
+}
+
+.body :global(hr) {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 1.5rem 0;
+}
+
+.sourceSmall {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #9CA3AF;
+}
+
+.sourceSmall a {
+  color: #9CA3AF;
+  text-decoration: underline;
+}
+
+
