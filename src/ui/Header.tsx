@@ -14,6 +14,10 @@ export function Header() {
           <a href="/" style={{ color: '#9CA3AF', textDecoration: 'none' }}>News</a>
           <a href="/learn" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Learn</a>
           <a href="/prompts" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Prompts</a>
+          <a href="/starchild" style={{ color: '#9CA3AF', textDecoration: 'none' }}>StarChild</a>
+          <a href="/starchild/chart" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Chart</a>
+          <a href="/starchild/ai" style={{ color: '#9CA3AF', textDecoration: 'none' }}>AI</a>
+          <a href="/origins" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Alien Origins</a>
         </nav>
       </div>
     </header>

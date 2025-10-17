@@ -13,8 +13,10 @@
     "@prisma/client": "^6.17.1",
     "@upstash/redis": "^1.35.6",
     "@vercel/og": "^0.8.5",
+    "astronomy-engine": "^2.1.19",
     "date-fns": "^4.1.0",
     "feed": "^5.1.0",
+    "luxon": "^3.7.2",
     "nanoid": "^5.1.6",
     "next": "14.2.5",
     "openai": "^6.3.0",
@@ -26,9 +28,12 @@
     "remark-gfm": "^4.0.1",
     "rss-parser": "^3.13.0",
     "slugify": "^1.6.6",
+    "three": "^0.160.0",
+    "tz-lookup": "^6.1.25",
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@types/luxon": "^3.7.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

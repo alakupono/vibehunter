@@ -22,6 +22,17 @@ export const app = {
     { name: 'The Marginalian (Brain Pickings)', tag: 'wisdom', type: 'rss', url: 'https://www.themarginalian.org/feed/', weight: 0.8 },
     { name: 'AEON Essays', tag: 'philosophy', type: 'rss', url: 'https://aeon.co/feed.rss', weight: 0.9 },
     { name: 'Edge.org', tag: 'science', type: 'rss', url: 'https://www.edge.org/feeds/conversations.xml', weight: 0.8 },
+    // Spiritualist / Channeling / Astrology / UAP
+    { name: 'Mysterious Universe', tag: 'paranormal', type: 'rss', url: 'https://mysteriousuniverse.org/feed/', weight: 1.0 },
+    { name: 'The Debrief (UAP/Tech)', tag: 'uap', type: 'rss', url: 'https://thedebrief.org/feed/', weight: 1.0 },
+    { name: 'SETI Institute News', tag: 'seti', type: 'rss', url: 'https://www.seti.org/news/feed', weight: 0.8 },
+    { name: 'The Black Vault (UFO Files)', tag: 'uap', type: 'rss', url: 'https://www.theblackvault.com/casefiles/feed/', weight: 0.8 },
+    { name: 'Medium Tag: Channeling', tag: 'channeling', type: 'rss', url: 'https://medium.com/feed/tag/channeling', weight: 0.7 },
+    { name: 'Medium Tag: Astrology', tag: 'astrology', type: 'rss', url: 'https://medium.com/feed/tag/astrology', weight: 0.7 },
+    { name: 'Medium Tag: UAP', tag: 'uap', type: 'rss', url: 'https://medium.com/feed/tag/uap', weight: 0.7 },
+    { name: 'Medium Tag: UFO', tag: 'uap', type: 'rss', url: 'https://medium.com/feed/tag/ufo', weight: 0.7 },
+    { name: 'Reddit search: Bashar channeling', tag: 'bashar', type: 'rss', url: 'https://www.reddit.com/search.rss?q=Bashar%20channeling&sort=new', weight: 0.6 },
+    { name: 'Reddit search: Channelers', tag: 'channeling', type: 'rss', url: 'https://www.reddit.com/search.rss?q=channeler%20channeling&sort=new', weight: 0.55 },
     // Community and lineage-adjacent
     { name: 'Chopra Foundation (News)', tag: 'chopra', type: 'rss', url: 'https://www.choprafoundation.org/feed/', weight: 1.1 },
     { name: 'Deepak Chopra (Press/Blog)', tag: 'chopra', type: 'rss', url: 'https://www.deepakchopra.com/feed/', weight: 1.1 },
