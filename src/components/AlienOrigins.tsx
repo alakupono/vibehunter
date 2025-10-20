@@ -168,7 +168,7 @@ export function AlienOrigins({ width=520, height=520 }: { width?: number; height
       }
 
       // build ordered buffers
-      const orderedNames: Array<{ name: string; pos: THREE.Vector3; m: number }> = []
+      const orderedNames: Array<{ name: string; pos: any; m: number }> = []
       for (let j = 0; j < N; j++) {
         const i = idx[j]
         const raRad = (Math.PI/180) * ra[i]
@@ -178,7 +178,7 @@ export function AlienOrigins({ width=520, height=520 }: { width?: number; height
           Math.sin(decRad),
           Math.cos(decRad) * Math.sin(raRad)
         )
-        let pos: THREE.Vector3
+        let pos: any
         if (starMode === 'distance' && plx && plx[i] > 0) {
           const distPc = 1000 / plx[i]
           const distLy = distPc * 3.26156
