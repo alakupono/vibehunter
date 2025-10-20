@@ -1,0 +1,10 @@
+[
+  {"id":"M31","type":"galaxy","ra_deg":10.6847,"dec_deg":41.269,"size_arcmin":190,"pa_deg":35,"mag":3.4,"name":"Andromeda","constellation":"Andromeda"},
+  {"id":"M42","type":"nebula","ra_deg":83.8221,"dec_deg":-5.3911,"size_arcmin":65,"pa_deg":0,"mag":4.0,"name":"Orion Nebula","constellation":"Orion"},
+  {"id":"M45","type":"cluster","ra_deg":56.75,"dec_deg":24.1167,"size_arcmin":110,"pa_deg":0,"mag":1.6,"name":"Pleiades","constellation":"Taurus"},
+  {"id":"M13","type":"globular","ra_deg":250.421,"dec_deg":36.461,"size_arcmin":20,"pa_deg":0,"mag":5.8,"name":"Hercules Cluster","constellation":"Hercules"},
+  {"id":"M8","type":"nebula","ra_deg":270.925,"dec_deg":-24.386,"size_arcmin":90,"pa_deg":0,"mag":6.0,"name":"Lagoon Nebula","constellation":"Sagittarius"},
+  {"id":"M51","type":"galaxy","ra_deg":202.4696,"dec_deg":47.1952,"size_arcmin":11,"pa_deg":163,"mag":8.4,"name":"Whirlpool Galaxy","constellation":"Canes Venatici"}
+]
+
+

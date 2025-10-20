@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Orion",
+    "segments": [
+      [{"ra_deg": 83.0017, "dec_deg": -0.2991}, {"ra_deg": 78.6345, "dec_deg": -8.2016}],
+      [{"ra_deg": 78.6345, "dec_deg": -8.2016}, {"ra_deg": 88.7929, "dec_deg": 7.4071}],
+      [{"ra_deg": 88.7929, "dec_deg": 7.4071}, {"ra_deg": 81.2828, "dec_deg": 6.3497}],
+      [{"ra_deg": 81.2828, "dec_deg": 6.3497}, {"ra_deg": 83.0017, "dec_deg": -0.2991}]
+    ]
+  },
+  {
+    "name": "Ursa Major",
+    "segments": [
+      [{"ra_deg": 165.932, "dec_deg": 61.751}, {"ra_deg": 165.460, "dec_deg": 56.382}],
+      [{"ra_deg": 165.460, "dec_deg": 56.382}, {"ra_deg": 183.856, "dec_deg": 57.032}],
+      [{"ra_deg": 183.856, "dec_deg": 57.032}, {"ra_deg": 193.507, "dec_deg": 55.960}],
+      [{"ra_deg": 193.507, "dec_deg": 55.960}, {"ra_deg": 206.885, "dec_deg": 49.313}],
+      [{"ra_deg": 206.885, "dec_deg": 49.313}, {"ra_deg": 197.487, "dec_deg": 49.320}]
+    ]
+  }
+]
+
+
