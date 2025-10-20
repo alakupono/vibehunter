@@ -12,11 +12,7 @@ export function Header() {
         <a href="/" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 800, letterSpacing: 0.3, textShadow: '0 0 18px rgba(34,211,238,0.25)' }}>{app.brandName}</a>
         <nav style={{ display: 'flex', gap: 16 }}>
           <a href="/" style={{ color: '#9CA3AF', textDecoration: 'none' }}>News</a>
-          <a href="/learn" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Learn</a>
-          <a href="/prompts" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Prompts</a>
-          <a href="/starchild" style={{ color: '#9CA3AF', textDecoration: 'none' }}>StarChild</a>
-          <a href="/starchild/chart" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Chart</a>
-          <a href="/starchild/ai" style={{ color: '#9CA3AF', textDecoration: 'none' }}>AI</a>
+          <a href="/starchild/ai" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Charts</a>
           <a href="/origins" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Alien Origins</a>
         </nav>
       </div>

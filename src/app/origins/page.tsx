@@ -8,6 +8,9 @@ export default function OriginsPage() {
       <div style={{ maxWidth: 1200, margin:'0 auto', padding:'0 24px' }}>
         <h1 style={{ fontSize: 22, marginBottom: 12 }}>Alien Origins (claimed)</h1>
         <p style={{ color:'#9CA3AF', marginBottom: 12 }}>This view plots claimed origins mapped to real stars/galaxies. These are cultural claims, not scientific facts.</p>
+        <div style={{ marginBottom: 12 }}>
+          <a href="/origins/encyclopedia" style={{ color:'#22D3EE', textDecoration:'none', border:'1px solid rgba(34,211,238,0.35)', padding:'6px 10px', borderRadius:8 }}>Open Encyclopedia</a>
+        </div>
         <div style={{ background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.06)', borderRadius:12, padding:12, minHeight: '70vh' }}>
           <AlienOrigins />
         </div>
